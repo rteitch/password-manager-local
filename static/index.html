@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Manager</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/sweetalert2.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <h1>Password Vault</h1>
+
+        <div id="auth-container">
+            <div id="login-section" class="auth-section">
+                <h2>Login</h2>
+                <form onsubmit="login(event)">
+                    <div class="form-group"><input type="text" id="loginUsername" placeholder="Username atau Email" required></div>
+                    <div class="form-group"><input type="password" id="loginPassword" placeholder="Password" required></div>
+                    <button type="submit">Login</button>
+                </form>
+                <p class="auth-switch">Belum punya akun? <a href="#" onclick="event.preventDefault(); showAuthSection('register-section');">Daftar di sini</a></p>
+            </div>
+            <div id="register-section" class="auth-section" style="display: none;">
+                <h2>Registrasi</h2>
+                <form onsubmit="register(event)">
+                    <div class="form-group"><input type="text" id="regUsername" placeholder="Username (minimal 3 karakter)" required></div>
+                    <div class="form-group"><input type="email" id="regEmail" placeholder="Email" required></div>
+                    <div class="form-group"><input type="password" id="regPassword" placeholder="Password (minimal 6 karakter)" required></div>
+                    <button type="submit">Daftar</button>
+                </form>
+                <p class="auth-switch">Sudah punya akun? <a href="#" onclick="event.preventDefault(); showAuthSection('login-section');">Login di sini</a></p>
+            </div>
+        </div>
+        
+        <div id="main-section" style="display:none;">
+            <div id="app-nav">
+                <button id="nav-list" class="active" onclick="showSection('list-accounts-section', this)">Lihat Akun</button>
+                <button id="nav-add" onclick="showSection('add-account-section', this)">Tambah Akun</button>
+                <!-- PERUBAHAN: Tombol Navigasi Baru -->
+                <button id="nav-generator" onclick="showSection('generator-section', this)">Generator</button>
+                <button id="nav-reset" onclick="showSection('reset-password-section', this)">Reset Password</button>
+                <button id="nav-logout" onclick="logout()">Logout</button> 
+            </div>
+
+            <div class="content-container">
+                <div id="list-accounts-section" class="app-content">
+                    <h2>Akun Tersimpan</h2>
+                    <!-- PERUBAHAN: Form Pencarian -->
+                    <div class="form-group search-bar">
+                        <input type="text" id="searchInput" onkeyup="filterAccounts()" placeholder="Cari berdasarkan Layanan, Username, atau Kategori...">
+                    </div>
+                    <div id="accounts-list"></div>
+                </div>
+
+                <div id="add-account-section" class="app-content" style="display:none;">
+                    <h2>Tambah Akun Baru</h2>
+                    <form onsubmit="addAccount(event)">
+                        <div class="form-group"><input type="text" id="service" placeholder="Nama Layanan (cth: Google)" required></div>
+                        <div class="form-group"><input type="text" id="username" placeholder="Username / Email" required></div>
+                        <div class="form-group"><input type="password" id="password" placeholder="Password Akun" required></div>
+                        <!-- PERUBAHAN: Input Kategori dan Catatan -->
+                        <div class="form-group"><input type="text" id="category" placeholder="Kategori (cth: Sosial Media, Email, Pekerjaan)"></div>
+                        <div class="form-group"><textarea id="notes" placeholder="Catatan (opsional)"></textarea></div>
+                        <button type="submit">Simpan Akun</button>
+                    </form>
+                </div>
+
+                <!-- PERUBAHAN: Konten untuk Password Generator -->
+                <div id="generator-section" class="app-content" style="display:none;">
+                    <h2>Password Generator</h2>
+                    <div class="generator-controls">
+                        <div class="form-group">
+                            <label for="length">Panjang Karakter: <span id="length-value">16</span></label>
+                            <input type="range" id="length" min="8" max="64" value="16" oninput="updateLengthValue(this.value)">
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label><input type="checkbox" id="uppercase" checked> Huruf Besar (A-Z)</label>
+                            <label><input type="checkbox" id="lowercase" checked> Huruf Kecil (a-z)</label>
+                            <label><input type="checkbox" id="numbers" checked> Angka (0-9)</label>
+                            <label><input type="checkbox" id="symbols" checked> Simbol (!@#$)</label>
+                        </div>
+                    </div>
+                    <div class="generated-password">
+                        <input type="text" id="generated-password-output" readonly placeholder="Password akan muncul di sini...">
+                        <button onclick="copyToClipboard('generated-password-output', 'Password Generator')">Salin</button>
+                    </div>
+                    <button class="generate-btn" onclick="generatePassword()">Buat Password Baru</button>
+                </div>
+                
+                <div id="reset-password-section" class="app-content" style="display:none;">
+                     <h2>Reset Password Login</h2>
+                    <form onsubmit="resetPassword(event)">
+                        <div class="form-group"><input type="password" id="oldPassword" placeholder="Password Lama" required></div>
+                        <div class="form-group"><input type="password" id="newPassword" placeholder="Password Baru" required></div>
+                        <div class="form-group"><input type="password" id="confirmPassword" placeholder="Konfirmasi Password Baru" required></div>
+                        <button type="submit">Reset Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/sweetalert2.all.min.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
