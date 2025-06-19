@@ -16,7 +16,7 @@ A secure web-based password manager built with Go. This app allows users to regi
 ### 1. Clone the Project
 
 ```bash
-git clone https://github.com/yourusername/go-password-vault.git
+git clone https://github.com/rteitch/go-password-vault.git
 cd go-password-vault
 ```
 
